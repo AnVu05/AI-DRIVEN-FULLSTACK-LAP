@@ -62,9 +62,38 @@ GIAI ĐOẠN 2 & 3: MICROSERVICES & EVENT-DRIVEN (Tương Lai)           ▼
 | **Frontend** | React 18, Vite, JavaScript (ES6+), Vanilla CSS | Xây dựng UI hiện đại, quản lý trạng thái phản ứng (Reactive), tối ưu Bundle size. |
 | **Networking** | Native `fetch()` $\rightarrow$ `Axios` Client | Làm chủ bản chất HTTP Stream, Promise, Interceptors, và Service Layer. |
 | **Backend** | Spring Boot 3.x, Spring Web, Spring Data JPA | Xây dựng RESTful API chuẩn mực với 6 Business Rules chặt chẽ. |
-| **Database** | In-Memory H2 $\rightarrow$ PostgreSQL / MySQL | Lưu trữ dữ liệu quan hệ, đánh chỉ mục và thiết kế Schema chuẩn. |
+| **Database** | Microsoft SQL Server (Unicode NVARCHAR), H2 | Lưu trữ dữ liệu quan hệ, xử lý chuẩn Unicode tiếng Việt có dấu. |
 | **AI Tooling** | Antigravity IDE, Custom Agent Skills & Rules | Tự động hóa quy trình pair-programming, prompt engineering có cấu trúc. |
 | **Future Stack** | Spring Cloud, Apache Kafka, Docker, Kubernetes | Chuyển dịch sang kiến trúc vi dịch vụ và xử lý luồng dữ liệu bất đồng bộ. |
+
+---
+
+## 🏆 Thành Quả Đã Hoàn Thành (Milestones Achieved & Proof of Work)
+
+### ✅ MODULE 0: Nền Tảng Lý Thuyết Cốt Lõi
+- **Bất đồng bộ trong JavaScript:** Hiểu cơ chế Non-blocking I/O, `Promise`, và cách dùng `async/await` để viết code tuần tự như Java mà không gây "đơ" (freeze) trình duyệt.
+- **Vòng đời Component & Hook `useEffect`:** Giải mã bẫy **Infinite Re-render Loop** khi gọi `setState` trực tiếp trong thân Component. Nắm vững cơ chế so sánh của Dependency Array `[]` (Mounting phase tương đương `@PostConstruct` trong Spring Boot).
+- **Bộ Ba Trạng Thái (Triad of Async State):** Luôn quản lý đồng thời `data` (dữ liệu), `loading` (trạng thái tải), và `error` (thông báo lỗi thân thiện).
+
+### ✅ MODULE 1: Xây Dựng Backend Spring Boot Theo 6 Business Rules (BRs)
+- **Kiến trúc phân tầng chuẩn mực:** `Entity`, `DTO`, `Repository`, `Service`, `@RestController`.
+- **Thực thi trọn vẹn 6 Business Rules:**
+  - `BR-01`: Validation tiêu đề (3-100 ký tự), trả về `400 Bad Request`.
+  - `BR-02`: Chống trùng công việc chưa hoàn thành (`existsByTitleIgnoreCaseAndCompletedFalse`).
+  - `BR-03`: Tự động gán mức ưu tiên mặc định (`Priority.MEDIUM`).
+  - `BR-04`: Vòng đời toggle (`completed = true` gán `completedAt = now()`, bỏ tick reset `null`).
+  - `BR-05`: Global Exception Handler ném `404 Not Found` (`ResourceNotFoundException`).
+  - `BR-06`: Cấu hình CORS toàn cục cho phép Vite React chạy tại `http://localhost:5173`.
+- **Kinh nghiệm thực chiến Database:** Xử lý triệt để lỗi font dấu tiếng Việt trong **Microsoft SQL Server** bằng `@Nationalized` và cấu hình `hibernate.use_nationalized_character_data=true` để tự động map sang `NVARCHAR`.
+
+### ✅ MODULE 2: Frontend Level 1 - Tự Tay Gọi API Bằng `fetch()` Thuần
+- **UI & UX hiện đại:** Giao diện Dark theme Glassmorphism tinh tế (Vite + React 18, font Plus Jakarta Sans, CSS micro-interactions).
+- **Học viên tự tay lập trình 100% 4 thao tác CRUD:**
+  - `GET /api/todos`: Nạp dữ liệu ban đầu, quản lý trọn vẹn 3 trạng thái (`todos`, `isLoading`, `errorMessage`).
+  - `POST /api/todos`: Gửi JSON body, bóc tách `400 Bad Request` từ Backend để hiển thị lỗi validation tiếng Việt trực tiếp trên form.
+  - `PUT /api/todos/{id}/toggle`: Đảo trạng thái hoàn thành và cập nhật mảng state bằng `.map()` bảo đảm tính bất biến (Immutability).
+  - `DELETE /api/todos/{id}`: Xóa bản ghi và lọc mảng state bằng `.filter()`.
+- **Bẫy thực tế đã vượt qua:** Nắm rõ sự khác biệt giữa Arrow Function có `{ return ... }` và không ngoặc nhọn (Implicit Return), khắc phục lỗi `ReferenceError` khi đọc body lỗi trong `try...catch`.
 
 ---
 
