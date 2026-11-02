@@ -1,0 +1,88 @@
+# ==========================================
+# Git Ignore - Full-Stack Learning & Evolution Project
+# ==========================================
+
+# --- Node & Frontend (React/Vite) ---
+**/node_modules/
+**/dist/
+**/dist-ssr/
+**/coverage/
+*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Environment files (giữ lại .env.example)
+.env
+.env.production
+.env.development
+!.env.example
+
+# --- Java & Backend (Spring Boot / Maven / Gradle) ---
+**/target/
+**/build/
+**/out/
+**/*.class
+**/*.jar
+**/*.war
+**/*.nar
+**/*.ear
+**/*.zip
+**/*.tar.gz
+**/*.rar
+
+# Maven / Gradle wrappers (chỉ giữ script nếu cần, ignore cache)
+**/.mvn/timing.properties
+**/.mvn/wrapper/maven-wrapper.jar
+**/.gradle/
+**/gradle-app.setting
+
+# Database files & temporary logs
+*.db
+*.sqlite
+*.sqlite3
+*.log
+
+# --- IDEs & Code Editors ---
+# IntelliJ IDEA
+**/.idea/
+**/*.iml
+**/*.iws
+**/*.ipr
+**/out/
+
+# Visual Studio Code
+**/.vscode/*
+!**/.vscode/extensions.json
+!**/.vscode/settings.json
+
+# Eclipse
+**/.apt_generated/
+**/.classpath
+**/.factorypath
+**/.project
+**/.settings/
+**/.springBeans
+
+# NetBeans
+**/nbproject/private/
+**/nbbuild/
+**/dist/
+**/nbproject/genfiles.properties
+**/nbproject/xml_checklist.properties
+
+# --- Operating System Files ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+[Dd]esktop.ini
+
+# --- Antigravity / AI IDE Temporary Artifacts ---
+**/scratch/
+**/.gemini/
