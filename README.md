@@ -1,99 +1,97 @@
-# 🚀 Full-Stack AI-Augmented Engineering Hub
+# 🚀 Full-Stack API Integration Lab: React (`fetch` & `Axios`) + Spring Boot
 
-> **Hành trình từ Nền Tảng Full-Stack (Spring Boot + React) đến Kiến Trúc Microservices & Event-Driven (Apache Kafka) — Ứng Dụng Phương Pháp AI-Augmented Pair Programming.**
+> **Dự án thực hành chuyên sâu về kỹ thuật gọi RESTful API trong React (từ `fetch()` thuần đến kiến trúc `Axios` Service Layer & Interceptors) kết nối với Backend Spring Boot 3.**
 
 [![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.x-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
 [![React](https://img.shields.io/badge/React-18.x-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Vite-5.x-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
-[![Java](https://img.shields.io/badge/Java-17+-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://openjdk.org/)
+[![Axios](https://img.shields.io/badge/Axios-HTTP_Client-5A29E4?style=for-the-badge&logo=axios&logoColor=white)](https://axios-http.com/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![AI-Augmented](https://img.shields.io/badge/AI_Augmented-Pair_Programming-blueviolet?style=for-the-badge&logo=openai&logoColor=white)](./CONTEXT_GUIDE.md)
 
 ---
 
-## 💡 Điểm Nhấn Dành Cho Nhà Tuyển Dụng (Recruiter Highlights)
+## 🎯 Mục Tiêu Học Tập (Learning Objectives)
 
-Repo này không chỉ lưu trữ mã nguồn, mà còn là **bằng chứng thực tế (Proof of Work)** thể hiện:
+Repository này tập trung **100% vào kỹ năng giao tiếp Client - Server (Call API)** trong ứng dụng Full-Stack thông qua bài toán **Todo List CRUD**:
 
-1. **Tư Duy Kiến Trúc & Xây Dựng Sản Phẩm (System Architecture):**
-   - Nắm vững chu trình phát triển trọn vẹn từ Backend RESTful API (Spring Boot MVC, DTO, Validation, Global Exception, CORS) đến Client-Side Frontend (React Hooks, Asynchronous Lifecycle, State Management).
-   - Thiết kế hệ thống theo hướng module hóa, sẵn sàng mở rộng (evolve) thành **Microservices** và **Event-Driven Architecture với Apache Kafka** trong các giai đoạn tiếp theo.
+1. **Làm chủ cơ chế bất đồng bộ (Asynchronous JS):**
+   - Hiểu sâu bản chất Non-blocking I/O, `Promise`, và cú pháp `async/await`.
+   - Phối hợp nhịp nhàng giữa `useEffect` (Mounting lifecycle) và `useState` mà không bị dính bẫy *Infinite Re-render Loop*.
+   - Quản lý trọn vẹn **Bộ 3 trạng thái bất đồng bộ (Triad of Async State):** `data` (dữ liệu), `isLoading` (đang tải), và `errorMessage` (thông báo lỗi).
 
-2. **Kỹ Năng Làm Chủ & Ứng Dụng AI Đỉnh Cao (AI-Augmented Engineering):**
-   - **Không Copy-Paste thụ động:** Thiết lập hệ sinh thái Rules & Skills độc lập (`.agents/`, `AGENTS.md`) để biến AI thành một **Senior Pair-Programmer & Socratic Mentor**.
-   - **Strict Learning Contract:** Tự tay viết 100% logic kết nối API (`fetch`/`axios`, `async/await`, `useEffect`, bất biến State), AI chỉ đóng vai trò phân tích nguyên nhân gốc rễ (Root Cause Analysis), gợi ý khung sườn và review code.
-   - **Context Maintenance Mastery:** Quản lý vòng đời ngữ cảnh AI qua các tài liệu theo dõi tiến độ (`PROGRESS.md`, `CONTEXT_GUIDE.md`), đảm bảo chất lượng kỹ thuật nhất quán.
+2. **Từ `fetch()` thuần (Level 1) lên `Axios` & Kiến trúc Service (Level 2):**
+   - **Cấp độ 1 - Native `fetch()`:** Hiểu rõ cơ chế HTTP Request/Response nguyên bản, tự cấu hình `method`, `headers`, `JSON.stringify()`, kiểm tra `response.ok` và giải mã luồng `await response.json()`.
+   - **Cấp độ 2 - `Axios` & Service Layer:** Thiết lập `axiosClient` dùng chung (`baseURL`, `headers`, `timeout`), tách biệt tầng giao tiếp mạng ra khỏi UI Component (`todoService.js`), và sử dụng **Response Interceptors** để bóc tách dữ liệu tập trung.
 
 ---
 
-## 🏛️ Bản Đồ Kiến Trúc & Lộ Trình Tiến Hóa (Architecture Evolution)
+## 🏛️ Kiến Trúc Kết Nối API (API Integration Architecture)
 
 ```
-GIAI ĐOẠN 1: MODULAR MONOLITH (Hiện Tại)
-┌─────────────────────────────────┐               ┌─────────────────────────────────┐
-│     React 18 Frontend (Vite)    │  HTTP / REST  │    Spring Boot 3.x REST API     │
-│  - Custom Fetch / Axios Service ├──────────────►│  - Controller, DTO, Service     │
-│  - Triad State: Data/Load/Error │◄──────────────┤  - Validation, Global Handler   │
-│  - React Hooks (State, Effect)  │     (JSON)    │  - CORS Config (Port 5173)      │
-└─────────────────────────────────┘               └────────────────┬────────────────┘
-                                                                   │
-                                                            Database (H2/MySQL)
-                                                                   │
-GIAI ĐOẠN 2 & 3: MICROSERVICES & EVENT-DRIVEN (Tương Lai)           ▼
-┌───────────────────────────────────────────────────────────────────────────────────┐
-│                           API Gateway (Spring Cloud Gateway)                      │
-└───────┬─────────────────────────────────┬─────────────────────────────────┬───────┘
-        ▼                                 ▼                                 ▼
-┌─────────────────┐             ┌───────────────────┐             ┌─────────────────┐
-│  Auth Service   │             │   Todo Service    │             │  Notify Service │
-│  (JWT / OAuth2) │             │ (Core Domain BRs) │             │(Email / Webhook)│
-└─────────────────┘             └─────────┬─────────┘             └────────▲────────┘
-                                          │                                │
-                                          └─────► [ Apache Kafka Topic ] ──┘
-                                                     Event Streaming
+┌───────────────────────────────────────────────────────────────────────────────┐
+│                          REACT 18 FRONTEND (Port 5173)                        │
+│                                                                               │
+│  ┌─────────────────────┐      ┌──────────────────────┐     ┌───────────────┐  │
+│  │   UI Component      │      │   Service Layer      │     │  Axios Client │  │
+│  │     (App.jsx)       ├─────►│  (todoService.js)    ├────►│(axiosClient.js│  │
+│  │ - State: Data/Load  │      │ - getAll()           │     │ - baseURL     │  │
+│  │ - Event Handlers    │◄─────┤ - create(todoData)   │◄────┤ - Interceptors│  │
+│  └─────────────────────┘      │ - toggle(id)         │     └───────┬───────┘  │
+│                               │ - delete(id)         │             │          │
+└───────────────────────────────┴──────────────────────┴─────────────┼──────────┘
+                                                                     │
+                                                           HTTP / JSON (CORS)
+                                                                     │
+┌────────────────────────────────────────────────────────────────────▼──────────┐
+│                       SPRING BOOT 3 BACKEND (Port 8080)                       │
+│                                                                               │
+│  [ @RestController ] ──► [ @Service (6 BRs) ] ──► [ @Repository ] ──► SQL DB  │
+└───────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
 ## 🛠️ Tech Stack & Công Nghệ Sử Dụng
 
-| Tầng | Công Nghệ / Thư Viện | Mục Tiêu Kỹ Thuật |
+| Tầng | Công Nghệ / Thư Viện | Mục Tiêu Thực Hành |
 | :--- | :--- | :--- |
-| **Frontend** | React 18, Vite, JavaScript (ES6+), Vanilla CSS | Xây dựng UI hiện đại, quản lý trạng thái phản ứng (Reactive), tối ưu Bundle size. |
-| **Networking** | Native `fetch()` $\rightarrow$ `Axios` Client | Làm chủ bản chất HTTP Stream, Promise, Interceptors, và Service Layer. |
-| **Backend** | Spring Boot 3.x, Spring Web, Spring Data JPA | Xây dựng RESTful API chuẩn mực với 6 Business Rules chặt chẽ. |
-| **Database** | Microsoft SQL Server (Unicode NVARCHAR), H2 | Lưu trữ dữ liệu quan hệ, xử lý chuẩn Unicode tiếng Việt có dấu. |
-| **AI Tooling** | Antigravity IDE, Custom Agent Skills & Rules | Tự động hóa quy trình pair-programming, prompt engineering có cấu trúc. |
-| **Future Stack** | Spring Cloud, Apache Kafka, Docker, Kubernetes | Chuyển dịch sang kiến trúc vi dịch vụ và xử lý luồng dữ liệu bất đồng bộ. |
+| **Frontend** | React 18, Vite, JavaScript (ES6+) | Quản lý State (`useState`), Lifecycle (`useEffect`), cập nhật mảng bất biến (`.map()`, `.filter()`). |
+| **HTTP Client** | Native `fetch()` & `Axios` | Thực hành gọi 4 thao tác CRUD (`GET`, `POST`, `PUT`, `DELETE`), cấu hình `axiosClient` và `Interceptors`. |
+| **Backend** | Spring Boot 3.x, Spring Data JPA | Cung cấp RESTful Endpoints, kiểm tra Validation (`400 Bad Request`), Global Exception Handler & CORS. |
+| **Database** | Microsoft SQL Server (NVARCHAR) | Lưu trữ dữ liệu thực tế, hỗ trợ chuẩn tiếng Việt có dấu (`@Nationalized`). |
 
 ---
 
-## 🏆 Thành Quả Đã Hoàn Thành (Milestones Achieved & Proof of Work)
+## 🏆 Nội Dung Đã Thực Hành & Hoàn Thành
 
 ### ✅ MODULE 0: Nền Tảng Lý Thuyết Cốt Lõi
-- **Bất đồng bộ trong JavaScript:** Hiểu cơ chế Non-blocking I/O, `Promise`, và cách dùng `async/await` để viết code tuần tự như Java mà không gây "đơ" (freeze) trình duyệt.
-- **Vòng đời Component & Hook `useEffect`:** Giải mã bẫy **Infinite Re-render Loop** khi gọi `setState` trực tiếp trong thân Component. Nắm vững cơ chế so sánh của Dependency Array `[]` (Mounting phase tương đương `@PostConstruct` trong Spring Boot).
-- **Bộ Ba Trạng Thái (Triad of Async State):** Luôn quản lý đồng thời `data` (dữ liệu), `loading` (trạng thái tải), và `error` (thông báo lỗi thân thiện).
+- Hiểu cơ chế bất đồng bộ trong JS: `Promise`, `async/await` (Non-blocking I/O).
+- Hiểu vòng đời Component React & vai trò của `useEffect` với Dependency Array `[]`.
+- Quản lý bộ 3 trạng thái bất đồng bộ: `todos`, `isLoading`, `errorMessage`.
 
-### ✅ MODULE 1: Xây Dựng Backend Spring Boot Theo 6 Business Rules (BRs)
-- **Kiến trúc phân tầng chuẩn mực:** `Entity`, `DTO`, `Repository`, `Service`, `@RestController`.
-- **Thực thi trọn vẹn 6 Business Rules:**
-  - `BR-01`: Validation tiêu đề (3-100 ký tự), trả về `400 Bad Request`.
-  - `BR-02`: Chống trùng công việc chưa hoàn thành (`existsByTitleIgnoreCaseAndCompletedFalse`).
-  - `BR-03`: Tự động gán mức ưu tiên mặc định (`Priority.MEDIUM`).
-  - `BR-04`: Vòng đời toggle (`completed = true` gán `completedAt = now()`, bỏ tick reset `null`).
-  - `BR-05`: Global Exception Handler ném `404 Not Found` (`ResourceNotFoundException`).
-  - `BR-06`: Cấu hình CORS toàn cục cho phép Vite React chạy tại `http://localhost:5173`.
-- **Kinh nghiệm thực chiến Database:** Xử lý triệt để lỗi font dấu tiếng Việt trong **Microsoft SQL Server** bằng `@Nationalized` và cấu hình `hibernate.use_nationalized_character_data=true` để tự động map sang `NVARCHAR`.
+### ✅ MODULE 1: Chuẩn Bị Backend Spring Boot (6 Business Rules)
+- Xây dựng RESTful API tại `/api/todos` với đầy đủ các ràng buộc thực tế:
+  - `BR-01`: Validate tiêu đề từ 3 - 100 ký tự (`400 Bad Request`).
+  - `BR-02`: Chặn tạo trùng công việc chưa hoàn thành (`400 Bad Request`).
+  - `BR-03`: Tự động gán mức ưu tiên mặc định (`MEDIUM`).
+  - `BR-04`: Tự động cập nhật thời gian `completedAt` khi đảo trạng thái.
+  - `BR-05`: Xử lý lỗi `404 Not Found` tập trung qua `@RestControllerAdvice`.
+  - `BR-06`: Mở cổng kết nối cho React qua `@CrossOrigin(origins = "http://localhost:5173")`.
 
-### ✅ MODULE 2: Frontend Level 1 - Tự Tay Gọi API Bằng `fetch()` Thuần
-- **UI & UX hiện đại:** Giao diện Dark theme Glassmorphism tinh tế (Vite + React 18, font Plus Jakarta Sans, CSS micro-interactions).
-- **Học viên tự tay lập trình 100% 4 thao tác CRUD:**
-  - `GET /api/todos`: Nạp dữ liệu ban đầu, quản lý trọn vẹn 3 trạng thái (`todos`, `isLoading`, `errorMessage`).
-  - `POST /api/todos`: Gửi JSON body, bóc tách `400 Bad Request` từ Backend để hiển thị lỗi validation tiếng Việt trực tiếp trên form.
-  - `PUT /api/todos/{id}/toggle`: Đảo trạng thái hoàn thành và cập nhật mảng state bằng `.map()` bảo đảm tính bất biến (Immutability).
-  - `DELETE /api/todos/{id}`: Xóa bản ghi và lọc mảng state bằng `.filter()`.
-- **Bẫy thực tế đã vượt qua:** Nắm rõ sự khác biệt giữa Arrow Function có `{ return ... }` và không ngoặc nhọn (Implicit Return), khắc phục lỗi `ReferenceError` khi đọc body lỗi trong `try...catch`.
+### ✅ MODULE 2: Frontend Level 1 — Tự Tay Gọi API Bằng `fetch()` Thuần
+- **`GET /api/todos`:** Gọi API lấy danh sách khi vừa vào trang, bật/tắt `LoadingSpinner` và bắt lỗi mất kết nối mạng.
+- **`POST /api/todos`:** Đóng gói payload bằng `JSON.stringify()`, cấu hình header `Content-Type: application/json`, bóc tách mã lỗi `400` từ Backend để hiển thị thông báo lỗi trực tiếp trên Form.
+- **`PUT /api/todos/{id}/toggle`:** Gọi API đảo trạng thái hoàn thành và dùng `.map()` để cập nhật lại phần tử trong mảng State.
+- **`DELETE /api/todos/{id}`:** Gọi API xóa công việc (xử lý phản hồi `204 No Content`) và dùng `.filter()` để loại bỏ phần tử khỏi giao diện.
+
+### ✅ MODULE 3: Frontend Level 2 — Nâng Cấp Lên `Axios` & Kiến Trúc Service
+- **Cấu hình [`axiosClient.js`](./frontend/src/api/axiosClient.js):**
+  - Thiết lập `baseURL: 'http://localhost:8080/api'`, `headers`, và `timeout`.
+  - Tích hợp **Response Interceptor** (`axiosClient.interceptors.response.use`) để tự động bóc tách `response.data` trước khi trả về cho tầng Service.
+- **Xây dựng tầng [`todoService.js`](./frontend/src/services/todoService.js):**
+  - Đóng gói 4 phương thức `getAll()`, `create()`, `toggle()`, `delete()` (tương đương tầng `@Service` bên Spring Boot).
+- **Tối ưu hóa [`App.jsx`](./frontend/src/App.jsx):**
+  - Loại bỏ hoàn toàn URL cứng và các bước parse JSON thủ công khỏi Component, bắt lỗi trực tiếp qua `error.response.data.message`.
 
 ---
 
@@ -101,60 +99,37 @@ GIAI ĐOẠN 2 & 3: MICROSERVICES & EVENT-DRIVEN (Tương Lai)           ▼
 
 ```
 .
-├── .agents/                             # Hệ sinh thái Skills & Rules hướng dẫn AI
-│   ├── rules/
-│   │   └── react-teaching-pedagogy.md   # Quy tắc sư phạm & 3 cấp độ gợi ý
-│   └── skills/
-│       └── react-api-tutoring/          # Kỹ năng đào tạo kết nối Full-Stack
-│           ├── SKILL.md                 # Quy trình dẫn dắt thực hành
-│           └── references/              # Cầu nối tư duy Spring Boot <-> React
 ├── backend/                             # Mã nguồn Backend (Spring Boot REST API)
-│   └── README.md                        # Đặc tả 6 Business Rules (BRs)
+│   └── README.md                        # Đặc tả 6 Business Rules & Endpoints
 ├── frontend/                            # Mã nguồn Frontend (React + Vite)
-│   └── README.md                        # Thiết kế UI & Kế hoạch kết nối API
-├── AGENTS.md                            # Quy tắc cốt lõi: AI TUYỆT ĐỐI KHÔNG CODE HỘ API
-├── CONTEXT_GUIDE.md                     # Sổ tay câu lệnh duy trì ngữ cảnh cho AI
-├── PROGRESS.md                          # Nhật ký & tiến độ học tập trên ổ đĩa
-├── .gitignore                           # Chỉ đẩy mã nguồn, loại bỏ hoàn toàn rác build
-└── README.md                            # Hồ sơ dự án & Portfolio
+│   ├── src/
+│   │   ├── api/
+│   │   │   └── axiosClient.js           # Cấu hình Axios Instance & Interceptors
+│   │   ├── services/
+│   │   │   └── todoService.js           # Tầng Service gọi API (GET, POST, PUT, DELETE)
+│   │   ├── components/                  # Các UI Components (TodoForm, TodoList, TodoItem...)
+│   │   └── App.jsx                      # Quản lý State & tích hợp gọi API
+│   └── README.md                        # Hướng dẫn thiết kế UI & API Integration
+├── AGENTS.md                            # Quy tắc Socratic Mentoring (AI không code hộ API)
+├── PROGRESS.md                          # Nhật ký & ghi chú kinh nghiệm qua từng Module
+└── README.md                            # Tổng quan dự án học Call API
 ```
 
 ---
 
-## 🤖 Minh Họa Quy Trình Hợp Tác Với AI (AI Collaboration in Action)
+## 🚦 Hướng Dẫn Chạy Dự Án (Getting Started)
 
-Thay vì dùng AI để sinh code hàng loạt một cách thụ động, repo này áp dụng mô hình **Spec-Driven & Socratic Learning**:
-
-1. **Thiết lập đặc tả nghiệp vụ (Specification):** Đặt ra 6 Business Rules rõ ràng trong [backend/README.md](./backend/README.md).
-2. **Kích hoạt Mentor Mode:** Tệp [AGENTS.md](./AGENTS.md) ràng buộc AI chỉ được cung cấp:
-   - Gợi ý khái niệm (*Conceptual Hints*).
-   - Phân tích nguyên nhân lỗi dựa trên giao thức HTTP (*Root Cause Analysis*).
-   - Kiểm tra tính bất biến của State (*Code Review*).
-3. **Người học tự tay cài đặt:** Tự viết từng hàm `fetch`, xử lý chuỗi Promise, bắt mã lỗi 400 Bad Request từ Spring Boot và hiển thị lên giao diện.
-
-> 📖 *Xem toàn bộ các câu lệnh mẫu dùng để điều phối AI tại [CONTEXT_GUIDE.md](./CONTEXT_GUIDE.md).*
-
----
-
-## 🚦 Bắt Đầu Nhanh (Getting Started)
-
-### 1. Khởi Chạy Backend (Spring Boot)
+### 1. Khởi chạy Backend (Spring Boot)
 ```bash
 cd backend
 ./mvnw spring-boot:run
-# Server chạy tại: http://localhost:8080
+# Backend chạy tại: http://localhost:8080/api/todos
 ```
 
-### 2. Khởi Chạy Frontend (React + Vite)
+### 2. Khởi chạy Frontend (React + Vite)
 ```bash
 cd frontend
 npm install
 npm run dev
-# Ứng dụng chạy tại: http://localhost:5173
+# Giao diện chạy tại: http://localhost:5173
 ```
-
----
-
-## 👤 Tác Giả (Author)
-- **Học viên & Kỹ sư phát triển:** Đang trên lộ trình làm chủ Full-Stack & Distributed Systems.
-- **Phương châm:** *"Làm chủ bản chất từ gốc rễ — Tận dụng AI làm đòn bẩy tư duy."*
