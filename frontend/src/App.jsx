@@ -3,6 +3,7 @@ import TodoForm from './components/TodoForm';
 import TodoList from './components/TodoList';
 import LoadingSpinner from './components/LoadingSpinner';
 import ErrorBanner from './components/ErrorBanner';
+import todoService from './services/todoService';
 import './App.css';
 
 // Endpoint Backend Spring Boot của chúng ta
@@ -32,17 +33,31 @@ export default function App() {
     // 7. Kết thúc: nhớ tắt loading (setIsLoading(false)).
 
     // call api get lấy danh sách todo
+    // const callAPI = async () => {
+    //   try {
+    //     const res = await fetch(API_URL);
+    //     if (res.ok) {
+    //       const todos = await res.json();
+    //       setTodos(todos);
+    //       setErrorMessage(null);
+    //       setIsLoading(false);
+    //     }
+    //   } catch {
+    //     setErrorMessage("Không thể kết nối đến server!!!");
+    //   }
+    // }
+    // callAPI();
+
+    // ta sẽ gọi api từ service qua
     const callAPI = async () => {
       try {
-        const res = await fetch(API_URL);
-        if (res.ok) {
-          const todos = await res.json();
-          setTodos(todos);
-          setErrorMessage(null);
-          setIsLoading(false);
-        }
-      } catch {
+        const todos = await todoService.getAll();
+        setTodos(todos);
+        setIsLoading(false);
+        setErrorMessage(null);
+      } catch (error) {
         setErrorMessage("Không thể kết nối đến server!!!");
+        setIsLoading(false);
       }
     }
     callAPI();
@@ -61,20 +76,32 @@ export default function App() {
     //    bóc tách json lỗi để lấy field `message`, rồi gọi setFormError(errorJson.message).
 
     // call API thêm mới một todo
-    try {
-      const request = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title, priority }) });
-      if(request.ok){
-        const res = await request.json();
-        setTodos([res, ...todos]);
-      }else{
-        const errorBr = await request.json();
-        setFormError(errorBr.message);
-      }
-    } catch {
-      setErrorMessage("Không thể kết nối đến server!!!");
-    }
-  };
+    // try {
+    //   const request = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title, priority }) });
+    //   if (request.ok) {
+    //     const res = await request.json();
+    //     setTodos([res, ...todos]);
+    //   } else {
+    //     const errorBr = await request.json();
+    //     setFormError(errorBr.message);
+    //   }
+    // } catch {
+    //   setErrorMessage("Không thể kết nối đến server!!!");
+    // }
 
+    // ta sẽ gọi api từ service 
+    try {
+      const res = await todoService.create({ title, priority });
+      setTodos([res, ...todos]);
+      setFormError(null);
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        setFormError(error.response.data.message);
+      } else {
+        setErrorMessage("Không thể kết nối đến server!!!");
+      }
+    };
+  }
   // =========================================================================
   // 🚀 THỬ THÁCH 2.4: ĐẢO TRẠNG THÁI HOÀN THÀNH (PUT /api/todos/{id}/toggle)
   // =========================================================================
@@ -86,16 +113,24 @@ export default function App() {
     //    Dùng .map() duyệt qua todos để thay thế todo có id tương ứng (tính bất biến Immutability).
 
     // call api cập nhật một todo
+    // try {
+    //   const request = await fetch(`${API_URL}/${id}/toggle`, { method: 'PUT' });
+    //   if (request.ok) {
+    //     const newTodo = await request.json();
+    //     setTodos((prevTodo) => prevTodo.map((todo) => { return todo.id === newTodo.id ? newTodo : todo }));
+    //   }
+    // } catch {
+    //   setErrorMessage("Không thể kết nối đến server!!!");
+    // }
+
+
+    // ta sẽ gọi api từ service 
     try {
-      const request = await fetch(`${API_URL}/${id}/toggle`, {method : 'PUT'});
-      if(request.ok){
-        const newTodo = await request.json();
-        setTodos((prevTodo) => prevTodo.map((todo) => {return todo.id === newTodo.id ? newTodo : todo}));
-      }
-    } catch {
+      const res = await todoService.toggle(id);
+      setTodos((prevTodo) => prevTodo.map((todo) => { return todo.id === res.id ? res : todo }))
+    } catch (error) {
       setErrorMessage("Không thể kết nối đến server!!!");
     }
-    
   };
 
   // =========================================================================
@@ -109,17 +144,22 @@ export default function App() {
     //    Dùng .filter() để loại bỏ todo có id đó ra khỏi mảng todos.
 
     //call api delete todo
+    // try {
+    //   const request = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+    //   if (request.ok) {
+    //     setTodos((prevTodo) => prevTodo.filter((todo) => { return todo.id !== id }))
+    //   }
+    // } catch {
+    //   setErrorMessage("Không thể kết nối đến server!!!");
+    // }
+
+    // ta sẽ gọi api từ service
     try {
-      const request = await fetch(`${API_URL}/${id}`, {method : 'DELETE'});
-      if(request.ok){
-        setTodos((prevTodo) => prevTodo.filter((todo) => {return todo.id !== id}))
-      }
-    } catch {
+      const res = await todoService.delete(id);
+      setTodos((prveTodo) => prveTodo.filter((todo) => { return todo.id !== id }));
+    } catch (error) {
       setErrorMessage("Không thể kết nối đến server!!!");
     }
-    
-
-
   };
 
   return (

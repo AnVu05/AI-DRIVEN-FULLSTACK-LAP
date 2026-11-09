@@ -5,8 +5,8 @@ Tài liệu này lưu lại trạng thái thực tế của quá trình học. K
 ---
 
 ## 📍 Trạng Thái Hiện Tại
-- **Module hiện tại:** `Module 3: Frontend Level 2 - Nâng Cấp Lên Axios & Kiến Trúc Service`
-- **Thử thách kế tiếp:** Cài đặt `axios`, cấu hình `axiosClient.js` và refactor tách tầng `services/todoService.js` tương tự tầng Service bên Spring Boot.
+- **Module hiện tại:** `Hoàn thành toàn bộ khóa học (Module 0 -> Module 3)`
+- **Thử thách kế tiếp:** Tổng kết & Ôn tập kiến thức Full-Stack (hoặc mở rộng tính năng nâng cao nếu muốn).
 - **Trạng thái kết nối Backend:** Hoạt động ổn định trên SQL Server.
 
 ---
@@ -36,10 +36,10 @@ Tài liệu này lưu lại trạng thái thực tế của quá trình học. K
 - [x] 2.4. **Học viên tự code PUT:** Toggle trạng thái hoàn thành và cập nhật mảng state bằng `.map()`.
 - [x] 2.5. **Học viên tự code DELETE:** Xóa công việc và cập nhật mảng state bằng `.filter()`.
 
-### [ ] MODULE 3: Frontend Level 2 - Nâng Cấp Lên `Axios` & Kiến Trúc Service
-- [ ] 3.1. Cài đặt thư viện `axios` và tạo `axiosClient.js`.
-- [ ] 3.2. Refactor tách tầng `services/todoService.js` (tương đương tầng Service bên Spring Boot).
-- [ ] 3.3. Tích hợp Interceptors bắt lỗi tập trung.
+### [x] MODULE 3: Frontend Level 2 - Nâng Cấp Lên `Axios` & Kiến Trúc Service
+- [x] 3.1. Cài đặt thư viện `axios` và tạo `axiosClient.js`.
+- [x] 3.2. Refactor tách tầng `services/todoService.js` (tương đương tầng Service bên Spring Boot).
+- [x] 3.3. Tích hợp Interceptors bắt lỗi tập trung.
 
 ---
 
@@ -51,3 +51,8 @@ Tài liệu này lưu lại trạng thái thực tế của quá trình học. K
   - *Arrow Function: Dùng `{}` thì bắt buộc phải có từ khóa `return`, nếu không sẽ trả về `undefined`. Muốn tự động return thì bỏ cặp ngoặc `{}`.*
   - *Tính bất biến (Immutability): Dùng `.map()` để update Todo (trả về object mới nếu khớp id), dùng `.filter()` để xóa Todo (chỉ cần điều kiện boolean `todo.id !== id`).*
   - *Bộ ba trạng thái bất đồng bộ: Luôn quản lý `data`, `isLoading` và `errorMessage`.*
+- *Kinh nghiệm Module 3:*
+  - *Tách tầng Service: Tách riêng `axiosClient.js` (cấu hình HTTP instance tương tự RestTemplate/WebClient Bean) và `todoService.js` (tương tự `@Service` trong Spring Boot), giúp Component `App.jsx` sạch sẽ, không còn URL hardcode hay `res.json()`.*
+  - *Cơ chế Axios Error: Khi status là 400/404/500, Axios tự động ném lỗi vào khối `catch (error)`. Object lỗi có `error.response.data` map với `ErrorResponseDTO` của Spring Boot (truy xuất qua `error.response?.data?.message`).*
+  - *Cạm bẫy HTTP 204 No Content: Khi xóa (DELETE), server trả về 204 không có body, biến `res` không chứa `.id` -> bắt buộc lọc bằng tham số `id` (`todo.id !== id`).*
+  - *Axios Interceptors: Dùng `axiosClient.interceptors.response.use()` để bóc sẵn `response.data` tại một nơi duy nhất. Khi đó các hàm ở `todoService.js` nhận trực tiếp dữ liệu JSON (nếu gọi thêm `.data` một lần nữa sẽ bị `undefined`).*
